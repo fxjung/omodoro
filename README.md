@@ -93,3 +93,5 @@ in the future.
 - require acknowledgement for next pomodoro/break
 - tk or gtk GUI
 - don't do a pomodoro cycle, just measure work/break times
+
+- sound output for notifications
