@@ -73,8 +73,8 @@ def changeState(newState, length):
     title = ""
     description = ""
     if newState == States.Pomodori:
-        title = "Next Pomodori"
-        description = "Please start with the next Pomodori!\nEnd Time: "
+        title = "Next Pomodoro"
+        description = "Please start with the next Pomodoro!\nEnd Time: "
     elif newState == States.ShortBreak:
         title = "Short Break"
         description = "Please take a short break!\nEnd Time: "
@@ -215,7 +215,7 @@ if __name__ == "__main__":
             print("Continuing the current pomodoro cycle.\nNew End Time: %s\n$ " % end_time.strftime("%H:%M"), end="")
         elif command == "n":
             nextState = True
-            print("Skipping to next pomodori/break, please wait some seconds.", end="")
+            print("Skipping to next pomodoro/break, please wait some seconds.", end="")
         elif command == "q":
             try:
                 lockObject.release()
