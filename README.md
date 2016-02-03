@@ -1,6 +1,6 @@
 ## 1 Overview
 
-omodoro is, as the name suggests, a tool for using the pomodoro technique.
+omodoro is tool for employing the pomodoro technique.
 
 Currently it provides the following features:
 
@@ -9,8 +9,8 @@ Currently it provides the following features:
 - option to abort the current pomodori or break and start the next one
 - commandline argument for user-specific pomodoro cycle
 - _~/.omodoro.conf_ or _APPDATA\omodoro.conf_ configuration file for user-specific pomodoro cycle
-- runs on any system with Python installed - Linux, Windows and others
-- play specified sound when on state change
+- play specified sound on state change (Linux and Mac)
+- runs on any system with Python installed - Linux, Windows and Mac
 
 ## 2 License
 
@@ -33,10 +33,7 @@ Original version by Oliver Kraitschy:
 [https://github.com/okraits/omodoro](https://github.com/okraits/omodoro)
 
 
-## 4 Requirements
-
-omodoro has the following requirements:
-
+## 4 Prerequisites
 - Python 3
 - libnotify (on all Systems except Microsoft Windows)
 
@@ -65,7 +62,11 @@ directory and modifying it
 
 3. adding a commandline argument by running omodoro like this:
 
-`python omodoro P-L-S-B`
+`./omodoro P-L-S-B`
+
+or:
+
+`python3 pyomodoro P-L-S-B`
 
 with
 
@@ -76,14 +77,14 @@ with
 
 Example with the default values:
 
-`python omodoro 4-25-5-15`
+`./omodoro 4-25-5-15`
 
 ## 7 TODO
 - require acknowledgement for next pomodoro/break
 - tk or gtk GUI
 - don't do a pomodoro cycle, just measure work/break times
 
-- sound output for other platforms than linux
+- sound output for windows
 
 ## 8 Known issues
 - Skipping pomodori does not terminate the cycle up to the long break
