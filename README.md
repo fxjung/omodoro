@@ -1,16 +1,4 @@
-# README for omodoro
-
-## Contents:
-
-1. Overview
-2. License
-3. Feedback, questions and contributions
-4. Requirements
-5. Usage
-6. Customization
-7. Todo list
-
-### 1. Overview
+# 1 Overview
 
 omodoro is, as the name suggests, a tool for using the pomodoro technique.
 
@@ -20,48 +8,54 @@ Currently it provides the following features:
 - option to pause and continue the cycle
 - option to abort the current pomodori or break and start the next one
 - commandline argument for user-specific pomodoro cycle
-- _/home/$USER/.omodoro.conf_ or _APPDATA\omodoro.conf_ configuration file for user-specific pomodoro cycle
+- _~/.omodoro.conf_ or _APPDATA\omodoro.conf_ configuration file for user-specific pomodoro cycle
 - runs on any system with Python installed - Linux, Windows and others
+- play specified sound when on state change
 
-### 2. License
+# 2 License
 
 This software is released under the terms of the
 GNU General Public License v2:
 
 [http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt](http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
 
-### 3. Feedback, questions and contributions
+# 3 Feedback, questions and contributions
+This software was initiated by Oliver Kraitschy (http://okraits.de, [okraits[at]arcor[dot]de](mailto:okraits@arcor.de)) and
+further improved by Felix Jung.
+
+Please feel free to send in feedback and questions regarding
+bugreports, feature requests, improvements, etc. via github or mail.
 
 There is a git repository available at github:
+[https://github.com/fxjung/omodoro] (https://github.com/fxjung/omodoro)
 
+Original version by Oliver Kraitschy:
 [https://github.com/okraits/omodoro](https://github.com/okraits/omodoro)
 
-This software was initiated by Oliver Kraitschy (http://okraits.de).
-Please feel free to send him feedback and questions regarding
-bugreports, feature requests, improvements, etc. via github or mail at
-[okraits[at]arcor[dot]de](mailto:okraits@arcor.de).
 
-### 4. Requirements
+# 4 Requirements
 
 omodoro has the following requirements:
 
 - Python 3
 - libnotify (on all Systems except Microsoft Windows)
 
-### 5. Usage
+# 5 Usage
 
-Run the script with python:
+### Run the script with python:
 
-`python omodoro`
+`python3 pyomodoro`
 
-When omodoro is running, you can type:
+### Execute the sh-wrapper:
+`./omodoro`
 
+### When running:
 - __p__ to pause the current pomodoro cycle
 - __c__ to continue the current pomodoro cycle - the end time will be adjusted
-- __n__ to abort the current pomodori or break and start the next one
+- __n__ to abort the current pomodoro or break and start the next one
 - __q__ to quit omodoro
 
-### 6. Customization
+# 6 Customization
 
 You can adjust the pomodoro cycle to your needs by
 
@@ -85,17 +79,13 @@ Example with the default values:
 
 `python omodoro 4-25-5-15`
 
-### 7. Todo list
-
-These are things which are planned to be done, at some point
-in the future.
-
+# 7 TODO
 - require acknowledgement for next pomodoro/break
 - tk or gtk GUI
 - don't do a pomodoro cycle, just measure work/break times
 
 - sound output for other platforms than linux
 
-### 8 Known issues
+# 8 Known issues
 - Skipping pomodori does not terminate the cycle up to the long break
 
