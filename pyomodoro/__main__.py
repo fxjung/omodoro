@@ -13,14 +13,7 @@ from platform import system as platformname
 from sys import argv
 from os.path import exists, expanduser
 from subprocess import check_call, STDOUT
-class Plfrm: 
-    windows,linux,mac=("Windows","Linux","Darwin")
-    def __init__(self):
-        self.platform=platformname() 
 
-    def iswindows(self): return self.platform==self.windows
-    def islinux(self): return self.platform==self.linux
-    def ismac(self): return self.platform==self.mac  
 
 # SETTINGS
 # adjust the pomodoro cycle to your needs
@@ -31,16 +24,22 @@ length_long_break = 15 # length of a long break in minutes
 soundfile=expanduser("~/.i3/moep.wav") # set "soundfile=0" to disable sound
 
 
+class Plfrm: 
+    windows,linux,mac=("Windows","Linux","Darwin")
+    def __init__(self): self.platform=platformname() 
+
+    def iswindows(self): return self.platform==self.windows
+    def islinux(self): return self.platform==self.linux
+    def ismac(self): return self.platform==self.mac  
+
 plfrm=Plfrm()
 if plfrm.islinux(): soundcmd="/usr/bin/aplay"
 elif plfrm.ismac(): soundcmd="afplay"
 else: soundfile=None
 
 # path to user-specific configuration file
-if plfrm.iswindows():
-    conf_file = getenv("APPDATA") + "\omodoro.conf"
-elif plfrm.islinux():
-    conf_file = getenv("HOME") + "/.omodoro.conf"
+if plfrm.iswindows(): conf_file=getenv("APPDATA")+"\omodoro.conf"
+elif plfrm.islinux(): conf_file = getenv("HOME")+"/.omodoro.conf"
 elif plfrm.ismac():
     print("\n\nWhy ON EARTH would someone use a mac?\n\n")
     conf_file=None
@@ -78,8 +77,6 @@ nextState = False # indicates user-triggered state change
 
 def changeState(newState, length):
     global end_time, state, nextState
-    title = ""
-    description = ""
     if newState == States.Pomodoro:
         title = "Next Pomodoro"
         description = "Start working!\nEnd Time: "
@@ -89,9 +86,8 @@ def changeState(newState, length):
     elif newState == States.LongBreak:
         title = "Long Break"
         description = "OK, seriously. You have worked long enough. Take a break, drink some coffee and exercise!\nEnd Time: "
-    else:
-        # Something went wrong - exit
-        exit(1)
+    # Something went wrong - exit
+    else: exit(1)
     end_time = datetime.now() + timedelta(minutes=length)
     description = description + end_time.strftime("%H:%M")
     print("\n%s\nEnd Time: %s\n$ " % (title, end_time.strftime("%H:%M")), end="")
@@ -107,8 +103,7 @@ def changeState(newState, length):
     nextState = False # user-triggered change state finished
 
 class PomodoroThread(Thread):
-    def __init__(self):
-        Thread.__init__(self)
+    def __init__(self): Thread.__init__(self)
 
     def run(self):
         global cnt_pomodori, cnt_short_breaks, state
@@ -133,21 +128,20 @@ class PomodoroThread(Thread):
                         # Something went wrong - exit
                         print("Error - aborting.")
                         exit(1)
-            elif state == States.ShortBreak:
+            elif state==States.ShortBreak:
                 # short break is not over
                 if end_time <= datetime.now() or nextState:
                     # decrease number of short breaks for the current cycle
-                    cnt_short_breaks -= 1
+                    cnt_short_breaks-=1
                     # start next pomodori
                     changeState(States.Pomodoro, length_pomodori)
-                pass
-            elif state == States.LongBreak:
+            elif state==States.LongBreak:
                 # long break is not over
-                if end_time <= datetime.now() or nextState:
+                if end_time<=datetime.now() or nextState:
                     # re-init variables, start next cycle
-                    cnt_pomodori = num_pomodori
-                    cnt_short_breaks = num_pomodori - 1
-                    changeState(States.Pomodoro, length_pomodori)
+                    cnt_pomodori=num_pomodori
+                    cnt_short_breaks=num_pomodori-1
+                    changeState(States.Pomodoro,length_pomodori)
             else:
                 # Something went wrong - exit
                 print("Error - aborting.")
@@ -172,9 +166,9 @@ if __name__ == "__main__":
                 file=conf_file))
             exit(1)
 
-    if len(argv) != 1:
-        if len(argv) == 2:
-            if (argv[1] == "-h") or (argv[1] == "--help"):
+    if len(argv)!=1:
+        if len(argv)==2:
+            if (argv[1]=="-h") or (argv[1] == "--help"):
                 printUsageInfo()
                 exit(0)
             else:
