@@ -78,13 +78,13 @@ def changeState(newState, length):
     description = ""
     if newState == States.Pomodoro:
         title = "Next Pomodoro"
-        description = "Please start with the next Pomodoro!\nEnd Time: "
+        description = "Start working!\nEnd Time: "
     elif newState == States.ShortBreak:
         title = "Short Break"
-        description = "Please take a short break!\nEnd Time: "
+        description = "Have a break!\nEnd Time: "
     elif newState == States.LongBreak:
         title = "Long Break"
-        description = "Please take a long break!\nEnd Time: "
+        description = "OK, seriously. You have worked long enough. Take a break, drink some coffee and exercise!\nEnd Time: "
     else:
         # Something went wrong - exit
         exit(1)
@@ -224,13 +224,13 @@ if __name__ == "__main__":
             print("Continuing the current pomodoro cycle.\nNew End Time: %s\n$ " % end_time.strftime("%H:%M"), end="")
         elif command == "n":
             nextState = True
-            print("Skipping to next pomodoro/break, please wait some seconds.", end="")
+            print("Skipping to next pomodoro/break, this may take some time.", end="")
         elif command == "q":
             try:
                 lockObject.release()
             except ThreadError:
                 pass # Lock was not locked - exit anyway
-            print("omodoro is shutting down, please wait some seconds.")
+            print("omodoro is shutting down, this may take some time.")
             exit(0)
         else:
             print("Unknown command.\n$ ", end="")
