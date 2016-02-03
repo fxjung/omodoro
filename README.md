@@ -57,9 +57,12 @@ omodoro has the following requirements:
 
 ## 6 Customization
 You can adjust the pomodoro cycle to your needs by
+
 1. editing the variables in the __SETTINGS__ section of the omodoro script
+
 2. copying the file _omodoro.conf.sample_ as _.omodoro.conf_ into your home
 directory and modifying it
+
 3. adding a commandline argument by running omodoro like this:
 
 `python omodoro P-L-S-B`
