@@ -1,17 +1,17 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # pomodoro script by Oliver Kraitschy
 # http://okraits.de okraits@arcor.de
 # https://github.com/okraits/omodoro
 
-from __future__ import print_function
-from os import system, getenv
+from os import getenv, devnull
 from datetime import datetime, timedelta
 from time import sleep
 from threading import Thread, Lock, ThreadError
 from platform import system as platformname
 from sys import argv, version_info
-from os.path import exists
+from os.path import exists, expanduser
+from subprocess import check_call, STDOUT
 if version_info >= (3, 0):
     get_input = input
     from configparser import ConfigParser
@@ -26,9 +26,13 @@ else:
 # SETTINGS
 # adjust the pomodoro cycle to your needs
 num_pomodori = 4 # number of pomodori to do in a cycle
-length_pomodori = 25 # length of one pomodori in minutes
+length_pomodori = 25 # length of one pomodoro in minutes
 length_short_break = 5 # length of a short break in minutes
 length_long_break = 15 # length of a long break in minutes
+soundfile=expanduser("~/.i3/moep.wav") # set "soundfile=0" to disable sound
+
+if platformname()=="Linux": soundcmd="/usr/bin/aplay"
+else: soundfile=0
 
 # path to user-specific configuration file
 if onWindows:
@@ -42,7 +46,7 @@ def printUsageInfo():
 \tomodoro P-L-S-B
 with
 \tP\tnumber of pomodori to do in a cycle
-\tL\tlength of one pomodori in minutes
+\tL\tlength of one pomodoro in minutes
 \tS\tlength of a short break in minutes
 \tB\tlength of a long break in minutes\n
 Example with the default values:
@@ -53,17 +57,17 @@ def printCLIInfo():
     print("""Welcome to omodoro. Available commands:\n
  p pause the current pomodoro cycle
  c continue the current pomodoro cycle
- n abort current pomodori/break, start next one
+ n abort current pomodoro/break, start next one
  q quit omodoro""")
 
 # global variables
-class States:
-    Pomodori, ShortBreak, LongBreak = range(3)
+class States: Pomodoro, ShortBreak, LongBreak = range(3)
+
 cnt_pomodori = num_pomodori # pomodori left in the current cycle
 cnt_short_breaks = num_pomodori - 1 # short breaks left in the current cycle
 end_time = None # end time of the current state
 time_left = None # time left after the pause
-state = States.Pomodori
+state = States.Pomodoro
 command = "" # input string
 lockObject = Lock()
 nextState = False # indicates user-triggered state change
@@ -72,7 +76,7 @@ def changeState(newState, length):
     global end_time, state, nextState
     title = ""
     description = ""
-    if newState == States.Pomodori:
+    if newState == States.Pomodoro:
         title = "Next Pomodoro"
         description = "Please start with the next Pomodoro!\nEnd Time: "
     elif newState == States.ShortBreak:
@@ -87,10 +91,15 @@ def changeState(newState, length):
     end_time = datetime.now() + timedelta(minutes=length)
     description = description + end_time.strftime("%H:%M")
     print("\n%s\nEnd Time: %s\n$ " % (title, end_time.strftime("%H:%M")), end="")
+
     if onWindows:
-        system('Msg "%s" "%s"' % (getenv("USERNAME"), description.replace('\n', '   ')))
+        check_call(["Msg", getenv("USERNAME"), description.replace('\n', '   ')])
     else:
-        system("notify-send -u critical '%s' '%s'" % (title, description))
+        check_call(["/usr/bin/notify-send","-u", "critical",title,description])
+
+    if soundfile: 
+        with open(devnull, 'wb') as dn:
+            check_call([soundcmd,expanduser(soundfile)], stdout=dn, stderr=STDOUT)
     state = newState
     nextState = False # user-triggered change state finished
 
@@ -103,8 +112,8 @@ class PomodoroThread(Thread):
 
         while command != "q":
             lockObject.acquire()
-            if state == States.Pomodori:
-                # pomodori is not over
+            if state == States.Pomodoro:
+                # pomodoro is not over
                 if end_time > datetime.now() and not nextState:
                     pass
                 else:
@@ -115,7 +124,7 @@ class PomodoroThread(Thread):
                         changeState(States.ShortBreak, length_short_break)
                     elif length_short_break == 0 and cnt_pomodori != 0:
                         # no short breaks -> start next pomodori
-                        changeState(States.Pomodori, length_pomodori)
+                        changeState(States.Pomodoro, length_pomodori)
                     elif cnt_pomodori == 0:
                         # last pomodori over -> start long break
                         changeState(States.LongBreak, length_long_break)
@@ -131,7 +140,7 @@ class PomodoroThread(Thread):
                     # decrease number of short breaks for the current cycle
                     cnt_short_breaks -= 1
                     # start next pomodori
-                    changeState(States.Pomodori, length_pomodori)
+                    changeState(States.Pomodoro, length_pomodori)
                 pass
             elif state == States.LongBreak:
                 # long break is not over
@@ -141,7 +150,7 @@ class PomodoroThread(Thread):
                     # re-init variables, start next cycle
                     cnt_pomodori = num_pomodori
                     cnt_short_breaks = num_pomodori - 1
-                    changeState(States.Pomodori, length_pomodori)
+                    changeState(States.Pomodoro, length_pomodori)
             else:
                 # Something went wrong - exit
                 print("Error - aborting.")
@@ -188,8 +197,8 @@ if __name__ == "__main__":
             exit(1)
 
     printCLIInfo()
-    # start first pomodori
-    changeState(States.Pomodori, length_pomodori)
+    # start first pomodoro
+    changeState(States.Pomodoro, length_pomodori)
     # run pomodoro thread
     pomodorothread = PomodoroThread()
     pomodorothread.start()

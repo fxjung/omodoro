@@ -94,4 +94,4 @@ in the future.
 - tk or gtk GUI
 - don't do a pomodoro cycle, just measure work/break times
 
-- sound output for notifications
+- sound output for other platforms than linux
