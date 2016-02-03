@@ -86,7 +86,6 @@ Example with the default values:
 - don't do a pomodoro cycle, just measure work/break times
 - sound output for windows
 - employ config file for mac
-- different sounds for different state transitions
 
 ## 8 Known issues
 Currently none. Yay!
