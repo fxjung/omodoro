@@ -90,7 +90,7 @@ def changeState(newState, length):
     else: exit(1)
     end_time = datetime.now() + timedelta(minutes=length)
     description = description + end_time.strftime("%H:%M")
-    print("\n%s\nEnd Time: %s\n$ " % (title, end_time.strftime("%H:%M")), end="")
+    print("\n{}\nEnd Time: {}\n$ ".format(title, end_time.strftime("%H:%M")), end='')
 
     if plfrm.iswindows(): check_call(["Msg", getenv("USERNAME"), description.replace('\n', '   ')])
     elif plfrm.islinux(): check_call(["/usr/bin/notify-send","-u", "critical",title,description])
@@ -211,7 +211,7 @@ if __name__ == "__main__":
                 continue
             end_time = datetime.now() + time_left
             time_left = None
-            print("Continuing the current pomodoro cycle.\nNew End Time: %s\n$ " % end_time.strftime("%H:%M"), end="")
+            print("Continuing the current pomodoro cycle.\nNew End Time: {}\n$ ".format(end_time.strftime("%H:%M")), end="")
         elif command == "n":
             nextState = True
             print("Skipping to next pomodoro/break...", end="")
