@@ -1,4 +1,4 @@
-# 1 Overview
+## 1 Overview
 
 omodoro is, as the name suggests, a tool for using the pomodoro technique.
 
@@ -12,14 +12,14 @@ Currently it provides the following features:
 - runs on any system with Python installed - Linux, Windows and others
 - play specified sound when on state change
 
-# 2 License
+## 2 License
 
 This software is released under the terms of the
 GNU General Public License v2:
 
 [http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt](http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
 
-# 3 Feedback, questions and contributions
+## 3 Feedback, questions and contributions
 This software was initiated by Oliver Kraitschy (http://okraits.de, [okraits[at]arcor[dot]de](mailto:okraits@arcor.de)) and
 further improved by Felix Jung.
 
@@ -33,14 +33,14 @@ Original version by Oliver Kraitschy:
 [https://github.com/okraits/omodoro](https://github.com/okraits/omodoro)
 
 
-# 4 Requirements
+## 4 Requirements
 
 omodoro has the following requirements:
 
 - Python 3
 - libnotify (on all Systems except Microsoft Windows)
 
-# 5 Usage
+## 5 Usage
 
 ### Run the script with python:
 
@@ -55,15 +55,11 @@ omodoro has the following requirements:
 - __n__ to abort the current pomodoro or break and start the next one
 - __q__ to quit omodoro
 
-# 6 Customization
-
+## 6 Customization
 You can adjust the pomodoro cycle to your needs by
-
 1. editing the variables in the __SETTINGS__ section of the omodoro script
-
 2. copying the file _omodoro.conf.sample_ as _.omodoro.conf_ into your home
 directory and modifying it
-
 3. adding a commandline argument by running omodoro like this:
 
 `python omodoro P-L-S-B`
@@ -79,13 +75,13 @@ Example with the default values:
 
 `python omodoro 4-25-5-15`
 
-# 7 TODO
+## 7 TODO
 - require acknowledgement for next pomodoro/break
 - tk or gtk GUI
 - don't do a pomodoro cycle, just measure work/break times
 
 - sound output for other platforms than linux
 
-# 8 Known issues
+## 8 Known issues
 - Skipping pomodori does not terminate the cycle up to the long break
 
