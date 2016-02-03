@@ -88,5 +88,4 @@ Example with the default values:
 - employ config file for mac
 
 ## 8 Known issues
-- Skipping pomodori does not terminate the cycle up to the long break
-
+Currently none. Yay!

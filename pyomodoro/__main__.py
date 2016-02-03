@@ -22,13 +22,13 @@ length_pomodori = 25 # length of one pomodoro in minutes
 length_short_break = 5 # length of a short break in minutes
 length_long_break = 15 # length of a long break in minutes
 
-class Plfrm: 
+class Plfrm:
     windows,linux,mac=("Windows","Linux","Darwin")
-    def __init__(self): self.platform=platformname() 
+    def __init__(self): self.platform=platformname()
 
     def iswindows(self): return self.platform==self.windows
     def islinux(self): return self.platform==self.linux
-    def ismac(self): return self.platform==self.mac  
+    def ismac(self): return self.platform==self.mac
 
 plfrm=Plfrm()
 if plfrm.islinux(): soundcmd="/usr/bin/aplay"
@@ -95,7 +95,7 @@ def changeState(newState, length):
     elif plfrm.islinux(): check_call(["/usr/bin/notify-send","-t","60000","-u", "critical",title,description])
     elif plfrm.ismac(): check_call(["osascript", "-e", 'display notification "{}" with title "{}"'.format(description, title)])
 
-    if soundfile is not None and soundcmd is not None: 
+    if soundfile is not None and soundcmd is not None:
         with open(devnull, 'wb') as dn:
             check_call([soundcmd,expanduser(soundfile)], stdout=dn, stderr=STDOUT)
     state = newState
@@ -146,9 +146,9 @@ class PomodoroThread(Thread):
                 print("Error - aborting.")
                 exit(0.5)
             lockObject.release()
-            sleep(5)
+            sleep(1)
         print("Terminated.")
-        
+
 
 if __name__ == "__main__":
     if conf_file is not None and exists(conf_file):
