@@ -5,7 +5,7 @@
 # improved by Felix Jung
 # https://github.com/fxjung/omodoro
 
-# osx compatibility by Linda Fliss
+# os x compatibility maintained by Linda Fliss
 
 from os import getenv, devnull
 from datetime import datetime, timedelta
@@ -15,17 +15,12 @@ from platform import system as platformname
 from sys import argv
 from os.path import exists, expanduser
 from subprocess import check_call, STDOUT
+from configparser import ConfigParser
 
-
-# SETTINGS
-# adjust the pomodoro cycle to your needs
 num_pomodori = 4 # number of pomodori to do in a cycle
 length_pomodori = 25 # length of one pomodoro in minutes
 length_short_break = 5 # length of a short break in minutes
 length_long_break = 15 # length of a long break in minutes
-soundfile=expanduser("~/.i3/moep.wav") # set "soundfile=0" to disable sound
-if plfrm.ismac(): soundfile=expanduser("~/Library/omodoro/notify.mp3") # save your mac soundfile here
-
 
 class Plfrm: 
     windows,linux,mac=("Windows","Linux","Darwin")
@@ -38,7 +33,8 @@ class Plfrm:
 plfrm=Plfrm()
 if plfrm.islinux(): soundcmd="/usr/bin/aplay"
 elif plfrm.ismac(): soundcmd="afplay"
-else: soundfile=None
+else: soundcmd=None
+soundfile=None
 
 # path to user-specific configuration file
 if plfrm.iswindows(): conf_file=getenv("APPDATA")+"\omodoro.conf"
@@ -96,10 +92,10 @@ def changeState(newState, length):
     print("\n{}\nEnd Time: {}\n$ ".format(title, end_time.strftime("%H:%M")), end='')
 
     if plfrm.iswindows(): check_call(["Msg", getenv("USERNAME"), description.replace('\n', '   ')])
-    elif plfrm.islinux(): check_call(["/usr/bin/notify-send","-u", "critical",title,description])
+    elif plfrm.islinux(): check_call(["/usr/bin/notify-send","-t","60000","-u", "critical",title,description])
     elif plfrm.ismac(): check_call(["osascript", "-e", 'display notification "{}" with title "{}"'.format(description, title)])
 
-    if soundfile is not None: 
+    if soundfile is not None and soundcmd is not None: 
         with open(devnull, 'wb') as dn:
             check_call([soundcmd,expanduser(soundfile)], stdout=dn, stderr=STDOUT)
     state = newState
@@ -159,14 +155,14 @@ if __name__ == "__main__":
         config = ConfigParser()
         config.read(conf_file)
         try:
-            num_pomodori = config.getint('POMODORO','number')
-            length_pomodori = config.getint('POMODORO','length')
-            length_short_break = config.getint('POMODORO','short_break')
-            length_long_break = config.getint('POMODORO','long_break')
-        except KeyError as error:
-            print('"{key}" is not located in the config file "{file}".'.format(
-                key=error,
-                file=conf_file))
+            num_pomodori = config.getint('POMODORO','number',fallback=num_pomodori)
+            length_pomodori = config.getint('POMODORO','length',fallback=length_pomodori)
+            length_short_break = config.getint('POMODORO','short_break',fallback=length_short_break)
+            length_long_break = config.getint('POMODORO','long_break',fallback=length_long_break)
+            soundfile=config.get("POMODORO",'audio_path',fallback=None)
+            if soundfile is not None: soundfile=soundfile.strip("\"\'")
+        except:
+            print("Unknown error occured while parsing configuration file.\nTerminating.")
             exit(1)
 
     if len(argv)!=1:

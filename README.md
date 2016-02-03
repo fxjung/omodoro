@@ -85,6 +85,7 @@ Example with the default values:
 - don't do a pomodoro cycle, just measure work/break times
 
 - sound output for windows
+- employ config file for mac
 
 ## 8 Known issues
 - Skipping pomodori does not terminate the cycle up to the long break
