@@ -97,7 +97,7 @@ def changeState(newState, length):
 
     if soundfile is not None and soundcmd is not None:
         with open(devnull, 'wb') as dn:
-            check_call([soundcmd,expanduser(soundfile)], stdout=dn, stderr=STDOUT)
+            check_call([soundcmd,expanduser(soundfile[newState])], stdout=dn, stderr=STDOUT)
     state = newState
     nextState = False # user-triggered change state finished
 
@@ -159,8 +159,14 @@ if __name__ == "__main__":
             length_pomodori = config.getint('POMODORO','length',fallback=length_pomodori)
             length_short_break = config.getint('POMODORO','short_break',fallback=length_short_break)
             length_long_break = config.getint('POMODORO','long_break',fallback=length_long_break)
-            soundfile=config.get("POMODORO",'audio_path',fallback=None)
-            if soundfile is not None: soundfile=soundfile.strip("\"\'")
+            # do crazy stuff to generate dict, assigning States.SPAM to filenames given in the file
+            soundfile=dict(zip({key: None for key in [States.Pomodoro,States.ShortBreak,States.LongBreak]},
+                [x.strip("\"\'") if x is not None else None for x in [config.get("POMODORO",
+                option,fallback=None) for option in ["audio_path_pomodoro",
+                "audio_path_short_break","audio_path_long_break"]]]))
+            audio_path=config.get("POMODORO","audio_path",fallback=None)
+            if audio_path is not None: soundfile={key: audio_path.strip("\"\'") for key in [States.Pomodoro,
+                States.ShortBreak,States.LongBreak]}
         except:
             print("Unknown error occured while parsing configuration file.\nTerminating.")
             exit(1)

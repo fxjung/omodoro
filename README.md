@@ -36,6 +36,7 @@ Original version by Oliver Kraitschy:
 ## 4 Prerequisites
 - Python 3
 - libnotify (on all Systems except Microsoft Windows)
+- For sound output omodoro needs some audio player. (Linux: aplay, Mac: afplay)
 
 ## 5 Usage
 
@@ -83,9 +84,9 @@ Example with the default values:
 - require acknowledgement for next pomodoro/break
 - tk or gtk GUI
 - don't do a pomodoro cycle, just measure work/break times
-
 - sound output for windows
 - employ config file for mac
+- different sounds for different state transitions
 
 ## 8 Known issues
 Currently none. Yay!
