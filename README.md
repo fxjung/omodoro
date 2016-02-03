@@ -95,3 +95,7 @@ in the future.
 - don't do a pomodoro cycle, just measure work/break times
 
 - sound output for other platforms than linux
+
+### 8 Known issues
+- Skipping pomodori does not terminate the cycle up to the long break
+
