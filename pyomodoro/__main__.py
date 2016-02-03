@@ -10,19 +10,17 @@ from datetime import datetime, timedelta
 from time import sleep
 from threading import Thread, Lock, ThreadError
 from platform import system as platformname
-from sys import argv, version_info
+from sys import argv
 from os.path import exists, expanduser
 from subprocess import check_call, STDOUT
-if version_info >= (3, 0):
-    get_input = input
-    from configparser import ConfigParser
-else:
-    get_input = raw_input
-    from ConfigParser import ConfigParser
-if platformname() == 'Windows':
-    onWindows = True
-else:
-    onWindows = False
+class Plfrm: 
+    windows,linux,mac=("Windows","Linux","Darwin")
+    def __init__(self):
+        self.platform=platformname() 
+
+    def iswindows(self): return self.platform==self.windows
+    def islinux(self): return self.platform==self.linux
+    def ismac(self): return self.platform==self.mac  
 
 # SETTINGS
 # adjust the pomodoro cycle to your needs
@@ -32,14 +30,20 @@ length_short_break = 5 # length of a short break in minutes
 length_long_break = 15 # length of a long break in minutes
 soundfile=expanduser("~/.i3/moep.wav") # set "soundfile=0" to disable sound
 
-if platformname()=="Linux": soundcmd="/usr/bin/aplay"
-else: soundfile=0
+
+plfrm=Plfrm()
+if plfrm.islinux(): soundcmd="/usr/bin/aplay"
+elif plfrm.ismac(): soundcmd="afplay"
+else: soundfile=None
 
 # path to user-specific configuration file
-if onWindows:
+if plfrm.iswindows():
     conf_file = getenv("APPDATA") + "\omodoro.conf"
-else:
+elif plfrm.islinux():
     conf_file = getenv("HOME") + "/.omodoro.conf"
+elif plfrm.ismac():
+    print("\n\nWhy ON EARTH would someone use a mac?\n\n")
+    conf_file=None
 
 def printUsageInfo():
     print("""Usage:
@@ -92,12 +96,11 @@ def changeState(newState, length):
     description = description + end_time.strftime("%H:%M")
     print("\n%s\nEnd Time: %s\n$ " % (title, end_time.strftime("%H:%M")), end="")
 
-    if onWindows:
-        check_call(["Msg", getenv("USERNAME"), description.replace('\n', '   ')])
-    else:
-        check_call(["/usr/bin/notify-send","-u", "critical",title,description])
+    if plfrm.iswindows(): check_call(["Msg", getenv("USERNAME"), description.replace('\n', '   ')])
+    elif plfrm.islinux(): check_call(["/usr/bin/notify-send","-u", "critical",title,description])
+    elif plfrm.ismac(): check_call(["osascript", "-e", "tell app \"System Events\" to display dialog", description])
 
-    if soundfile: 
+    if soundfile is not None: 
         with open(devnull, 'wb') as dn:
             check_call([soundcmd,expanduser(soundfile)], stdout=dn, stderr=STDOUT)
     state = newState
@@ -155,7 +158,7 @@ class PomodoroThread(Thread):
         
 
 if __name__ == "__main__":
-    if exists(conf_file):
+    if conf_file is not None and exists(conf_file):
         config = ConfigParser()
         config.read(conf_file)
         try:
@@ -198,7 +201,7 @@ if __name__ == "__main__":
 
     # commandline interface
     while True:
-        command = get_input()
+        command = input()
         if command == "p":
             if time_left is None: # if not None, already paused
                 if lockObject.acquire(True):
