@@ -1,6 +1,6 @@
 ## 1 Overview
 
-omodoro is tool for employing the pomodoro technique.
+omodoro is a tool for employing the pomodoro technique.
 
 Currently it provides the following features:
 
@@ -18,6 +18,24 @@ This software is released under the terms of the
 GNU General Public License v2:
 
 [http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt](http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
+
+The included sound file (bell.wav) was created by user *juskiddink* on [freesound.org](https://www.freesound.org/people/juskiddink/sounds/68261/) and is licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). It has been converted to the wave format.
+
+## How to install
+To use omodoro easily, complete the following steps:
+
+### Linux
+Copy the shell wrapper file "omodoro" and the directory "pyomodoro" into ~/bin:
+`cp -r omodoro pyomodoro ~/bin/`
+
+Copy the config file to ~:
+`cp omodoro.config ~/.omodoro.config`
+
+Edit the config file as you desire. Then start omodoro by typing
+`omodoro`
+
+(*Hint*: For this to work it is necessary to add ~/bin to your `$PATH` variable)
+
 
 ## 3 Feedback, questions and contributions
 This software was initiated by Oliver Kraitschy (http://okraits.de, [okraits[at]arcor[dot]de](mailto:okraits@arcor.de)) and
