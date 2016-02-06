@@ -110,10 +110,11 @@ Example with the default values:
 `./omodoro 4-25-5-15`
 
 ## 7 TODO
-- require acknowledgement for next pomodoro/break
-- tk or gtk GUI
-- don't do a pomodoro cycle, just measure work/break times
-- sound output for windows
+- logfile, i.e. enable some statistics about what you're doing and how long
+- complete windows support (sensible notifications, sound output)
+- GUI (preferably QT)
+- legacy: don't do a pomodoro cycle, just measure work/break times
+- legacy: require acknowledgement for next pomodoro/break
 
 ## 8 Known issues
 Currently none. Yay!
