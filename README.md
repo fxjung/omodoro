@@ -21,7 +21,7 @@ The included sound file (bell.wav) was created by user *juskiddink* on [freesoun
 ## How to install
 To use omodoro easily, complete the following steps:
 
-## Prerequisites
+### Prerequisites
 - Python3
 - libnotify (Linux only)
 - For sound output omodoro needs an audio player. (Linux: aplay, Mac: afplay (pre-installed))
