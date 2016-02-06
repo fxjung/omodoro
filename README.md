@@ -36,10 +36,22 @@ Edit the config file as you desire. Then start omodoro by typing
 
 (*Hint*: For this to work it is necessary to add ~/bin to your `$PATH` variable)
 
+### Mac
+Copy the shell wrapper file "omodoro" and the directory "pyomodoro" into ~/Applications:
+`cp -r omodoro pyomodoro ~/Applications/omodoro`
+
+Copy the config file to ~:
+`cp omodoro.config ~/Library/omodoro/omodoro.config`
+
+Edit the config file as you desire. Then start omodoro by typing
+`omodoro`
+
+(*Hint*: For this to work it is necessary to add ~/Applications/omodoro to your `$PATH` variable)
+
 
 ## 3 Feedback, questions and contributions
 This software was initiated by Oliver Kraitschy (http://okraits.de, [okraits[at]arcor[dot]de](mailto:okraits@arcor.de)) and
-further improved by Felix Jung.
+further improved by Felix Jung (and Linda Fliss).
 
 Please feel free to send in feedback and questions regarding
 bugreports, feature requests, improvements, etc. via github or mail.
@@ -53,8 +65,8 @@ Original version by Oliver Kraitschy:
 
 ## 4 Prerequisites
 - Python 3
-- libnotify (on all Systems except Microsoft Windows)
-- For sound output omodoro needs some audio player. (Linux: aplay, Mac: afplay)
+- libnotify (on all Systems except Microsoft Windows an Mac)
+- For sound output omodoro needs some audio player. (Linux: aplay, Mac: afplay (pre-installed))
 
 ## 5 Usage
 
@@ -103,7 +115,6 @@ Example with the default values:
 - tk or gtk GUI
 - don't do a pomodoro cycle, just measure work/break times
 - sound output for windows
-- employ config file for mac
 
 ## 8 Known issues
 Currently none. Yay!
