@@ -39,9 +39,7 @@ soundfile=None
 # path to user-specific configuration file
 if plfrm.iswindows(): conf_file=getenv("APPDATA")+"\omodoro.conf"
 elif plfrm.islinux(): conf_file = getenv("HOME")+"/.omodoro.conf"
-elif plfrm.ismac():
-    print("\n\nWhy ON EARTH would someone use a mac?\n\n")
-    conf_file=None
+elif plfrm.ismac(): conf_file = getenv("HOME")+"/Library/omodoro/omodoro.conf"
 
 def printUsageInfo():
     print("""Usage:
