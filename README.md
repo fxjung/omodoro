@@ -50,11 +50,9 @@ Edit the config file as you desire. Then start omodoro by typing
 
 
 ## 3 Feedback, questions and contributions
-This software was initiated by Oliver Kraitschy (http://okraits.de, [okraits[at]arcor[dot]de](mailto:okraits@arcor.de)) and
-further improved by Felix Jung (and Linda Fliss).
+This software is a fork of the original omodoro script, which was written by Oliver Kraitschy (http://okraits.de, [okraits[at]arcor[dot]de](mailto:okraits@arcor.de)).
 
-Please feel free to send in feedback and questions regarding
-bugreports, feature requests, improvements, etc. via github or mail.
+This forked version is being improved and maintained by Felix Jung and Linda Fliss.
 
 There is a git repository available at github:
 [https://github.com/fxjung/omodoro] (https://github.com/fxjung/omodoro)
@@ -62,6 +60,7 @@ There is a git repository available at github:
 Original version by Oliver Kraitschy:
 [https://github.com/okraits/omodoro](https://github.com/okraits/omodoro)
 
+Please feel free to send in feedback and questions regarding bugreports, feature requests, improvements, etc. via github or mail.
 
 ## 4 Prerequisites
 - Python 3
