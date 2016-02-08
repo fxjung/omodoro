@@ -21,6 +21,7 @@ num_pomodori = 4 # number of pomodori to do in a cycle
 length_pomodori = 25 # length of one pomodoro in minutes
 length_short_break = 5 # length of a short break in minutes
 length_long_break = 15 # length of a long break in minutes
+autolog=True
 
 class Plfrm:
     windows,linux,mac=("Windows","Linux","Darwin")
@@ -33,13 +34,18 @@ class Plfrm:
 plfrm=Plfrm()
 if plfrm.islinux(): soundcmd="/usr/bin/aplay"
 elif plfrm.ismac(): soundcmd="afplay"
+elif plfrm.iswindows(): soundcmd="vlc.exe --play-and-exit" # TODO: try cvlc
 else: soundcmd=None
 soundfile=None
 
 # path to user-specific configuration file
-if plfrm.iswindows(): conf_file=getenv("APPDATA")+"\omodoro.conf"
-elif plfrm.islinux(): conf_file = getenv("HOME")+"/.omodoro.conf"
+if plfrm.islinux(): conf_file = getenv("HOME")+"/.omodoro.conf"
 elif plfrm.ismac(): conf_file = getenv("HOME")+"/Library/omodoro/omodoro.conf"
+elif plfrm.iswindows(): conf_file=getenv("APPDATA")+"\omodoro.conf"
+
+def log(text,force=False):
+    if autolog or force:
+        with open("log.csv", "a") as myfile: myfile.write("{};{}\n".format(datetime.now(),text))
 
 def printUsageInfo():
     print("""Usage:
@@ -76,12 +82,15 @@ def changeState(newState, length):
     global end_time, state, nextState
     if newState == States.Pomodoro:
         title = "Next Pomodoro"
+        log("POMODORO")
         description = "Start working!\nEnd Time: "
     elif newState == States.ShortBreak:
         title = "Short Break"
+        log("SHORT BREAK")
         description = "Have a break!\nEnd Time: "
     elif newState == States.LongBreak:
         title = "Long Break"
+        log("LONG BREAK")
         description = "OK, seriously. You have worked long enough. Take a break, drink some coffee and exercise!\nEnd Time: "
     # Something went wrong - exit
     else: exit(1)
@@ -189,6 +198,7 @@ if __name__ == "__main__":
             printUsageInfo()
             exit(1)
 
+    log("STARTED")
     printCLIInfo()
     # start first pomodoro
     changeState(States.Pomodoro, length_pomodori)
@@ -203,6 +213,7 @@ if __name__ == "__main__":
             if time_left is None: # if not None, already paused
                 if lockObject.acquire(True):
                     time_left = end_time - datetime.now()
+                    log("PAUSED")
                     print("Paused.\n$ ", end="")
             else:
                 print("Error: current cycle is already paused.\n$ ", end="")
@@ -214,16 +225,22 @@ if __name__ == "__main__":
                 continue
             end_time = datetime.now() + time_left
             time_left = None
+            log("CONTINUED")
             print("Continuing the current pomodoro cycle.\nNew End Time: {}\n$ ".format(end_time.strftime("%H:%M")), end="")
         elif command == "n":
             nextState = True
+            log("SKIPPED")
             print("Skipping to next pomodoro/break...", end="")
+        elif command[0] == "t":
+            log(command[1:].strip(' '),force=True)
+            print("\n$ ", end="")
         elif command == "q":
             try:
                 lockObject.release()
             except ThreadError:
                 pass # Lock was not locked - exit anyway
             print("Quitting...")
+            log("TERMINATED")
             exit(0)
         else:
             print("Unknown command.\n$ ", end="")

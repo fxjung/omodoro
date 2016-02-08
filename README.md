@@ -89,7 +89,7 @@ If permanent configuration is desired just use the configuration file.
 Currently none. Yay!
 
 ## Future
-- logfile, i.e. enable some statistics about what you're doing and how long
+- logfile path option in config file
 - complete windows support (sensible notifications, sound output)
 - GUI (preferably QT)
 - legacy: don't do a pomodoro cycle, just measure work/break times
